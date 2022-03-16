@@ -1,6 +1,7 @@
 name: Issue Check
 
 on:
+  workflow_dispatch:
   issues:
     type: [opened]
 
@@ -8,6 +9,7 @@ jobs:
   issue_check:
     runs-on: ubuntu-latest
     steps:
+      - run: echo "hello"
       - run: |
           if [ "${{ github.event.issue.title }}" == *"bug"* ]
           then
