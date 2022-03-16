@@ -1,0 +1,15 @@
+name: Issue Check
+
+on:
+  issues:
+    type: [opened]
+
+jobs:
+  issue_check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          if [ "${{ github.event.issue.title }}" == *"bug"* ]
+          then
+            curl -X POST  -H "Authorization: Token ${{ secrets.GITHUB_TOKEN }}" -d '{"labels": ["bug"]}' ${{ github.event.issue.url }}/labels
+          fi
